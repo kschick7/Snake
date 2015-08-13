@@ -1,17 +1,10 @@
-public class GameInfo {
-	public enum State {
-		MAIN_MENU, IN_GAME, GAME_OVER, PAUSED
-	}
+
+public class GameInfo implements GameState {
 
 	private State gameState;
 
 	public GameInfo() {
 		this.gameState = State.MAIN_MENU;
-	}
-
-
-	public void switchState(State nextState) {
-
 	}
 
 	public State getGameState() {

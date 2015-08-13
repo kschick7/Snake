@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
+import java.util.ArrayList;
 
 public class View {
 
@@ -25,7 +25,7 @@ public class View {
 		menuTitle.setFont(new Font("Courier New", Font.BOLD, 100));
 		menuTitle.setForeground(Color.green);
 		menuTitle.setBounds(100,100,300,150);
-		frame.add(menuTitle, BorderLayout.CENTER);
+		//frame.add(menuTitle);
 
 		startButton = new JButton("Start");
 		startButton.setBackground(Color.WHITE);
@@ -33,6 +33,7 @@ public class View {
 		startButton.setBounds(178, 250, 144, 36);
 		startButton.setForeground(Color.BLUE);
 		startButton.setBorderPainted(false);
+		/*
 		startButton.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -41,29 +42,40 @@ public class View {
 						frame.getContentPane().setBackground(Color.CYAN);
 					}
 				}
-		);
-		frame.add(startButton);
+		);*/
+		//frame.add(startButton);
 
-		Scanner keyboard = new Scanner(System.in);
-		//keyboard.addActionListener
 	}
 
 	public void setBackground(Color color) {
 		frame.getContentPane().setBackground(color);
 	}
 
-	public void setStateElements(GameInfo.State state) {
+	public void removeAll() {
 		frame.removeAll();
-		switch(state) {
-			case MAIN_MENU:
-				frame.add(menuTitle);
-				frame.add(startButton);
-				break;
-		}
 	}
 
-	public void startGame() {
+	public void addGroup(ArrayList<Component> group) {
+		for (Component item : group)
+			frame.add(item);
+	}
 
+	public void removeGroup(ArrayList<Component> group) {
+		for (Component item : group)
+			frame.remove(item);
+	}
+
+	public JLabel getMenuTitle() {
+		return menuTitle;
+	}
+
+	public JButton getStartButton() {
+		return startButton;
+	}
+
+	public void refresh() {
+		frame.revalidate();
+		frame.repaint();
 	}
 }
 
