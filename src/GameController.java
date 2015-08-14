@@ -4,12 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Random;
 
 
 public class GameController implements GameState {
     public static final int GAME_FPS = 20;
+    private static final int MAX_NUM_APPLES = 3;
 
     private GameInfo gameInfo;
     private View view;
@@ -44,19 +47,19 @@ public class GameController implements GameState {
                     switch(e.getKeyCode()) {
                         case KeyEvent.VK_UP:
                             if (gameInfo.getPlayer().getDirection() != Snake.Direction.DOWN)
-                                gameInfo.getPlayer().setDirection(Snake.Direction.UP);
+                                gameInfo.getPlayer().setNextDirection(Snake.Direction.UP);
                             break;
                         case KeyEvent.VK_DOWN:
                             if (gameInfo.getPlayer().getDirection() != Snake.Direction.UP)
-                                gameInfo.getPlayer().setDirection(Snake.Direction.DOWN);
+                                gameInfo.getPlayer().setNextDirection(Snake.Direction.DOWN);
                             break;
                         case KeyEvent.VK_LEFT:
                             if (gameInfo.getPlayer().getDirection() != Snake.Direction.RIGHT)
-                                gameInfo.getPlayer().setDirection(Snake.Direction.LEFT);
+                                gameInfo.getPlayer().setNextDirection(Snake.Direction.LEFT);
                             break;
                         case KeyEvent.VK_RIGHT:
                             if (gameInfo.getPlayer().getDirection() != Snake.Direction.LEFT)
-                                gameInfo.getPlayer().setDirection(Snake.Direction.RIGHT);
+                                gameInfo.getPlayer().setNextDirection(Snake.Direction.RIGHT);
                             break;
                     }
                 }
@@ -85,9 +88,17 @@ public class GameController implements GameState {
                     run();
             }
         }).start();
+        new Timer(5000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (gameInfo.getGameState() == State.IN_GAME && gameInfo.getApples().size() < MAX_NUM_APPLES)
+                    spawnApple();
+            }
+        }).start();
     }
 
     private void run() {
+        gameInfo.getPlayer().updateDirection();
         move();
         view.refresh();
     }
@@ -118,8 +129,14 @@ public class GameController implements GameState {
                 nextCoordinate.alterX(1);
                 break;
         }
+        if (nextCoordinate.isOutOfBounds(50, 50) || gameInfo.getPlayer().isCollision(nextCoordinate)) {
+            gameOver();
+            return;
+        }
+        checkForApples(nextCoordinate);
+
         gameInfo.getPlayer().insertFront(nextCoordinate);
-        snakeView.addFirst(new Pixel(nextCoordinate));
+        snakeView.addFirst(new Pixel(nextCoordinate, Color.red));
         view.add(snakeView.getFirst());
         if (gameInfo.getPlayer().getGrowCounter() == 0) {
             gameInfo.getPlayer().removeBack();
@@ -132,8 +149,39 @@ public class GameController implements GameState {
 
     private void renderSnake() {
         for (Coordinate coordinate: gameInfo.getPlayer().getCoordinates()) {
-            snakeView.addLast(new Pixel(coordinate));
+            snakeView.addLast(new Pixel(coordinate, Color.red));
             view.add(snakeView.getLast());
         }
+    }
+
+    private void spawnApple() {
+        Random random = new Random();
+        Pixel apple = new Pixel(new Coordinate(random.nextInt(50), random.nextInt(50)), Color.yellow);
+        view.add(apple);
+        gameInfo.getApples().add(apple);
+    }
+
+    private void checkForApples(Coordinate coordinate) {
+        ArrayList<Pixel> apples = gameInfo.getApples();
+        for (int i = 0; i < apples.size(); ++i) {
+            if (apples.get(i).getCoordinate().equals(coordinate)) {
+                view.remove(apples.get(i));
+                apples.remove(i);
+                gameInfo.incrementScore();
+                gameInfo.getPlayer().incrGrowCounter();
+                view.getScoreLabel().setText(Integer.toString(gameInfo.getScore()));
+            }
+        }
+    }
+
+    public void setSnakeColor(Color color) {
+        for (Pixel pixel : snakeView) {
+            pixel.setBackground(color);
+        }
+    }
+
+    public void gameOver() {
+        changeGameState(State.GAME_OVER);
+        setSnakeColor(Color.GRAY);
     }
 }

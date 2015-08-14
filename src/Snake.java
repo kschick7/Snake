@@ -6,11 +6,13 @@ public class Snake {
     }
 
     private Direction direction;
+    private Direction nextDirection;
     private LinkedList<Coordinate> coordinates;
     private int growCounter;
 
     public Snake() {
         direction = Direction.UP;
+        nextDirection = Direction.UP;
         growCounter = 0;
         coordinates = new LinkedList<>();
         coordinates.add(new Coordinate(24, 22));
@@ -22,8 +24,8 @@ public class Snake {
         return direction;
     }
 
-    public void setDirection(Direction direction) {
-        this.direction = direction;
+    public void updateDirection() {
+        direction = nextDirection;
     }
 
     public Coordinate getFront() {
@@ -52,5 +54,25 @@ public class Snake {
 
     public void decrGrowCounter() {
         --this.growCounter;
+    }
+
+    public void incrGrowCounter() {
+        this.growCounter += 3;
+    }
+
+    public Direction getNextDirection() {
+        return nextDirection;
+    }
+
+    public void setNextDirection(Direction nextDirection) {
+        this.nextDirection = nextDirection;
+    }
+
+    public boolean isCollision(Coordinate coordinate) {
+        for (Coordinate snakeCoord : coordinates) {
+            if (snakeCoord.equals(coordinate))
+                return true;
+        }
+        return false;
     }
 }

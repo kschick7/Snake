@@ -1,14 +1,17 @@
+import java.util.ArrayList;
 
 public class GameInfo implements GameState {
 
 	private State gameState;
 	private int score;
 	private Snake player;
+	private ArrayList<Pixel> apples;
 
 	public GameInfo() {
 		gameState = State.MAIN_MENU;
 		score = 0;
 		player = new Snake();
+		apples = new ArrayList<>();
 	}
 
 	public State getGameState() {
@@ -30,4 +33,9 @@ public class GameInfo implements GameState {
 	public Snake getPlayer() {
 		return player;
 	}
+
+	public ArrayList<Pixel> getApples() {
+		return apples;
+	}
+
 }

@@ -33,7 +33,7 @@ public class Coordinate {
 
     // Returns whether or not this coordinate is out of the grid boundaries (xBound, yBound)
     public boolean isOutOfBounds(int xBound, int yBound) {
-        return (x >= xBound || y >= yBound);
+        return (x >= xBound || y >= yBound || x < 0 || y < 0);
     }
 
     public boolean equals(Coordinate other) {

@@ -8,6 +8,7 @@ public class View {
 	private JLabel menuTitle;
 	private JButton startButton;
 	private JFrame frame;
+	private JLabel scoreLabel;
 
 	public View(){
 		frame = new JFrame("Snake");
@@ -18,7 +19,7 @@ public class View {
 		frame.setLocation(dim.width/2-250, dim.height/2-250);
 		frame.setResizable(false);
 		frame.setVisible(true);
-		frame.setBackground(Color.WHITE);
+		setBackground(Color.WHITE);
 		frame.setFocusable(true);
 
 		menuTitle = new JLabel("SNAKE", SwingConstants.CENTER);
@@ -32,6 +33,11 @@ public class View {
 		startButton.setBounds(178, 250, 144, 36);
 		startButton.setForeground(Color.BLUE);
 		startButton.setBorderPainted(false);
+
+		scoreLabel = new JLabel("0");
+		scoreLabel.setForeground(Color.LIGHT_GRAY);
+		scoreLabel.setBounds(450, 10, 50, 50);
+		frame.add(scoreLabel);
 	}
 
 	public void setBackground(Color color) {
@@ -75,6 +81,10 @@ public class View {
 
 	public void addKeyListener(KeyListener keyListener) {
 		frame.addKeyListener(keyListener);
+	}
+
+	public JLabel getScoreLabel() {
+		return scoreLabel;
 	}
 }
 

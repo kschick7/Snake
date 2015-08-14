@@ -8,11 +8,17 @@ public class Pixel extends JLabel{
 
     private static final int WIDTH = 10;
     private static final int HEIGHT = 10;
+    private Coordinate coordinate;
 
-    public Pixel(Coordinate coordinate) {
+    public Pixel(Coordinate _coordinate, Color _color) {
         super("");
         setOpaque(true);
-        setBackground(Color.RED);
-        setBounds(coordinate.getX() * WIDTH, coordinate.getY() * HEIGHT, WIDTH, HEIGHT);
+        setBackground(_color);
+        setBounds(_coordinate.getX() * WIDTH, _coordinate.getY() * HEIGHT, WIDTH, HEIGHT);
+        coordinate = _coordinate;
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 }
