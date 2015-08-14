@@ -2,12 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 
 public class GameController implements GameState {
-    public static final int GAME_FPS = 10;
+    public static final int GAME_FPS = 20;
 
     private GameInfo gameInfo;
     private View view;
@@ -27,6 +29,42 @@ public class GameController implements GameState {
             @Override
             public void actionPerformed(ActionEvent e) {
                 changeGameState(State.IN_GAME);
+            }
+        });
+
+        view.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                // Blank
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (gameInfo.getGameState() == State.IN_GAME) {
+                    switch(e.getKeyCode()) {
+                        case KeyEvent.VK_UP:
+                            if (gameInfo.getPlayer().getDirection() != Snake.Direction.DOWN)
+                                gameInfo.getPlayer().setDirection(Snake.Direction.UP);
+                            break;
+                        case KeyEvent.VK_DOWN:
+                            if (gameInfo.getPlayer().getDirection() != Snake.Direction.UP)
+                                gameInfo.getPlayer().setDirection(Snake.Direction.DOWN);
+                            break;
+                        case KeyEvent.VK_LEFT:
+                            if (gameInfo.getPlayer().getDirection() != Snake.Direction.RIGHT)
+                                gameInfo.getPlayer().setDirection(Snake.Direction.LEFT);
+                            break;
+                        case KeyEvent.VK_RIGHT:
+                            if (gameInfo.getPlayer().getDirection() != Snake.Direction.LEFT)
+                                gameInfo.getPlayer().setDirection(Snake.Direction.RIGHT);
+                            break;
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                // Blank
             }
         });
 

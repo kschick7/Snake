@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 public class View {
@@ -14,12 +13,13 @@ public class View {
 		frame = new JFrame("Snake");
 		frame.getContentPane().setLayout(null);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		frame.setSize(500,500);
+		frame.setSize(506,528);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		frame.setLocation(dim.width/2-250, dim.height/2-250);
 		frame.setResizable(false);
 		frame.setVisible(true);
 		frame.setBackground(Color.WHITE);
+		frame.setFocusable(true);
 
 		menuTitle = new JLabel("SNAKE", SwingConstants.CENTER);
 		menuTitle.setFont(new Font("Courier New", Font.BOLD, 100));
@@ -71,6 +71,10 @@ public class View {
 
 	public void remove(Component component) {
 		frame.remove(component);
+	}
+
+	public void addKeyListener(KeyListener keyListener) {
+		frame.addKeyListener(keyListener);
 	}
 }
 
