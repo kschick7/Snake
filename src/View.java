@@ -25,7 +25,6 @@ public class View {
 		menuTitle.setFont(new Font("Courier New", Font.BOLD, 100));
 		menuTitle.setForeground(Color.green);
 		menuTitle.setBounds(100,100,300,150);
-		//frame.add(menuTitle);
 
 		startButton = new JButton("Start");
 		startButton.setBackground(Color.WHITE);
@@ -33,18 +32,6 @@ public class View {
 		startButton.setBounds(178, 250, 144, 36);
 		startButton.setForeground(Color.BLUE);
 		startButton.setBorderPainted(false);
-		/*
-		startButton.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						frame.remove(menuTitle);
-						frame.remove(startButton);
-						frame.getContentPane().setBackground(Color.CYAN);
-					}
-				}
-		);*/
-		//frame.add(startButton);
-
 	}
 
 	public void setBackground(Color color) {
@@ -76,6 +63,14 @@ public class View {
 	public void refresh() {
 		frame.revalidate();
 		frame.repaint();
+	}
+
+	public void add(Component component) {
+		frame.add(component);
+	}
+
+	public void remove(Component component) {
+		frame.remove(component);
 	}
 }
 
