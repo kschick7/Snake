@@ -1,9 +1,15 @@
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Snake {
     enum Direction {
         UP, DOWN, LEFT, RIGHT
     }
+    private static final Coordinate START_COORDS[] = {new Coordinate(24, 22),
+                                                      new Coordinate(24, 22),
+                                                      new Coordinate(24, 22)};
 
     private Direction direction;
     private Direction nextDirection;
@@ -14,10 +20,8 @@ public class Snake {
         direction = Direction.UP;
         nextDirection = Direction.UP;
         growCounter = 0;
-        coordinates = new LinkedList<>();
-        coordinates.add(new Coordinate(24, 22));
-        coordinates.add(new Coordinate(24, 23));
-        coordinates.add(new Coordinate(24, 24));
+        coordinates = new LinkedList<>(Arrays.asList(START_COORDS));
+        //coordinates.add();
     }
 
     public Direction getDirection() {
@@ -74,5 +78,9 @@ public class Snake {
                 return true;
         }
         return false;
+    }
+
+    public void reset() {
+        coordinates = new LinkedList<>(Arrays.asList(START_COORDS));
     }
 }

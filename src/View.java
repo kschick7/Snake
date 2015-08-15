@@ -9,6 +9,9 @@ public class View {
 	private JButton startButton;
 	private JFrame frame;
 	private JLabel scoreLabel;
+	private JLabel pausedLabel;
+	private JLabel gameOverLabel;
+	private JLabel continueLabel;
 
 	public View(){
 		frame = new JFrame("Snake");
@@ -21,6 +24,8 @@ public class View {
 		frame.setVisible(true);
 		setBackground(Color.WHITE);
 		frame.setFocusable(true);
+		ImageIcon icon = new ImageIcon("icon.jpg");
+		frame.setIconImage(icon.getImage());
 
 		menuTitle = new JLabel("SNAKE", SwingConstants.CENTER);
 		menuTitle.setFont(new Font("Courier New", Font.BOLD, 100));
@@ -36,8 +41,26 @@ public class View {
 
 		scoreLabel = new JLabel("0");
 		scoreLabel.setForeground(Color.LIGHT_GRAY);
-		scoreLabel.setBounds(450, 10, 50, 50);
-		frame.add(scoreLabel);
+		scoreLabel.setBounds(470, 10, 50, 30);
+		scoreLabel.setFont(new Font(null, JFrame.NORMAL, 20));
+
+		pausedLabel = new JLabel("Paused");
+		pausedLabel.setForeground(Color.BLUE);
+		pausedLabel.setFont(new Font(null, JFrame.NORMAL, 48));
+		pausedLabel.setBounds(0, 0, 506, 300);
+		pausedLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+		gameOverLabel = new JLabel("GAME OVER");
+		gameOverLabel.setForeground(Color.BLACK);
+		gameOverLabel.setFont(new Font(null, JFrame.NORMAL, 48));
+		gameOverLabel.setBounds(0, 0, 506, 300);
+		gameOverLabel.setHorizontalAlignment(SwingConstants.CENTER);
+
+		continueLabel = new JLabel("Press space to continue.");
+		continueLabel.setForeground(Color.DARK_GRAY);
+		continueLabel.setFont(new Font(null, JFrame.NORMAL, 20));
+		continueLabel.setBounds(0, 100, 506, 300);
+		continueLabel.setHorizontalAlignment(SwingConstants.CENTER);
 	}
 
 	public void setBackground(Color color) {
@@ -85,6 +108,18 @@ public class View {
 
 	public JLabel getScoreLabel() {
 		return scoreLabel;
+	}
+
+	public JLabel getPausedLabel() {
+		return pausedLabel;
+	}
+
+	public JLabel getGameOverLabel() {
+		return gameOverLabel;
+	}
+
+	public JLabel getContinueLabel() {
+		return continueLabel;
 	}
 }
 

@@ -4,14 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Random;
 
 
 public class GameController implements GameState {
-    public static final int GAME_FPS = 20;
+    public static final int GAME_FPS = 15;
     private static final int MAX_NUM_APPLES = 3;
 
     private GameInfo gameInfo;
@@ -61,7 +60,16 @@ public class GameController implements GameState {
                             if (gameInfo.getPlayer().getDirection() != Snake.Direction.LEFT)
                                 gameInfo.getPlayer().setNextDirection(Snake.Direction.RIGHT);
                             break;
+                        case KeyEvent.VK_ESCAPE:
+                        case KeyEvent.VK_P:
+                        case KeyEvent.VK_SPACE:
+                            changeGameState(State.PAUSED);
                     }
+                } else if (gameInfo.getGameState() == State.PAUSED && e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    changeGameState(State.IN_GAME);
+                } else if (gameInfo.getGameState() == State.GAME_OVER && e.getKeyCode() == KeyEvent.VK_SPACE) {
+                    changeGameState(State.MAIN_MENU);
+                    reset();
                 }
             }
 
@@ -77,10 +85,16 @@ public class GameController implements GameState {
     private void initComponentGroups() {
         stateComponentGroups.get(State.MAIN_MENU.ordinal()).add(view.getMenuTitle());
         stateComponentGroups.get(State.MAIN_MENU.ordinal()).add(view.getStartButton());
+        stateComponentGroups.get(State.IN_GAME.ordinal()).add(view.getScoreLabel());
+        stateComponentGroups.get(State.PAUSED.ordinal()).add(view.getPausedLabel());
+        stateComponentGroups.get(State.PAUSED.ordinal()).add(view.getContinueLabel());
+        stateComponentGroups.get(State.GAME_OVER.ordinal()).add(view.getContinueLabel());
+        stateComponentGroups.get(State.GAME_OVER.ordinal()).add(view.getGameOverLabel());
     }
 
     public void launch() {
         view.addGroup(stateComponentGroups.get(State.MAIN_MENU.ordinal()));
+        view.refresh();
         new Timer(1000 / GAME_FPS, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -107,7 +121,7 @@ public class GameController implements GameState {
         view.removeGroup(stateComponentGroups.get(gameInfo.getGameState().ordinal()));
         gameInfo.setGameState(nextState);
         view.addGroup(stateComponentGroups.get(nextState.ordinal()));
-        if (nextState == State.IN_GAME) {
+        if (nextState == State.IN_GAME && snakeView.isEmpty()) {
             renderSnake();
         }
         view.refresh();
@@ -183,5 +197,13 @@ public class GameController implements GameState {
     public void gameOver() {
         changeGameState(State.GAME_OVER);
         setSnakeColor(Color.GRAY);
+    }
+
+    public void reset() {
+        for (Pixel pixel : snakeView)
+            view.remove(pixel);
+        snakeView.clear();
+        gameInfo.reset();
+
     }
 }
