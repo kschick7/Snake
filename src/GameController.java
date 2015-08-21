@@ -202,8 +202,9 @@ public class GameController implements GameState {
     public void reset() {
         for (Pixel pixel : snakeView)
             view.remove(pixel);
+        for (Pixel pixel : gameInfo.getApples())
+            view.remove(pixel);
         snakeView.clear();
         gameInfo.reset();
-
     }
 }

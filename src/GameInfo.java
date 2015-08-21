@@ -41,6 +41,7 @@ public class GameInfo implements GameState {
 	public void reset() {
 		player.reset();
 		score = 0;
+		apples.clear();
 	}
 
 }
